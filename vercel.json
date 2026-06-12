@@ -1,0 +1,45 @@
+{
+  "builds": [
+    {
+      "src": "Backend/app.py",
+      "use": "@vercel/python"
+    },
+    {
+      "src": "Frontend/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "outputDirectory": "dist"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/evaluate",
+      "dest": "/Backend/app.py"
+    },
+    {
+      "src": "/register",
+      "dest": "/Backend/app.py"
+    },
+    {
+      "src": "/login",
+      "dest": "/Backend/app.py"
+    },
+    {
+      "src": "/setup_db",
+      "dest": "/Backend/app.py"
+    },
+    {
+      "src": "/notes(.*)",
+      "dest": "/Backend/app.py"
+    },
+    {
+      "src": "/queries(.*)",
+      "dest": "/Backend/app.py"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/Frontend/$1"
+    }
+  ]
+}

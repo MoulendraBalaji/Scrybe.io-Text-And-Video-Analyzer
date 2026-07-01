@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import { fileURLToPath } from 'url'
 import { resolve } from 'path'
 
 export default defineConfig({
@@ -12,7 +13,7 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      '@': resolve(__dirname, 'src'),
+      '@': resolve(fileURLToPath(new URL('.', import.meta.url)), 'src'),
     }
   },
   build: {

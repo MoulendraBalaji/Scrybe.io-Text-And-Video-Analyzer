@@ -36,7 +36,6 @@ function App() {
   // Screen Capture State
   const [isRecording, setIsRecording] = useState(false);
   const [mediaStream, setMediaStream] = useState(null);
-  const [captureMode, setCaptureMode] = useState('screen');
   const [telemetry, setTelemetry] = useState({ brightness: 50, contrast: 50, edge_density: 50, info_rate: 50 });
   const captureCanvasRef = useRef(null);
   const videoStreamRef = useRef(null);
@@ -63,7 +62,7 @@ function App() {
       try {
         const parsed = JSON.parse(savedUser);
         setCurrentUser(parsed);
-      } catch (e) {
+      } catch {
         localStorage.removeItem('scrybeUser');
       }
     }
@@ -112,7 +111,7 @@ function App() {
             question: item.query_text,
             ...evalResult
           };
-        } catch (e) {
+        } catch {
           return {
             dbId: item.id,
             date: new Date(item.created_at).toLocaleDateString(),

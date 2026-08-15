@@ -27,6 +27,11 @@ class FrameAnalysisResult(BaseModel):
 class NoteCreate(BaseModel):
     content: str
 
+class FollowUpRequest(BaseModel):
+    transcript: str = ""
+    reference_answer: str = ""
+    missing_concepts: list[str] = []
+
 class EvaluationResult(BaseModel):
     transcript: str = ""
     summary: str = ""

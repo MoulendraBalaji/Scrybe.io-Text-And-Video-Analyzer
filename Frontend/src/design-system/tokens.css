@@ -1,0 +1,96 @@
+/* ============================================================
+   Scrybe Design Tokens — Dark Claymorphism
+   Identity: voice + ink + intelligence. Graphite clay base with
+   a dark red/blue signal duo. Not pastel clay.
+   ============================================================ */
+
+:root {
+  /* ---- Clay material ---- */
+  --clay-base:        #14151A;   /* page background */
+  --clay-surface:      #1E2028;  /* raised card surface */
+  --clay-surface-alt:  #23262F;  /* nested/inset surface */
+  --clay-highlight:    rgba(255, 255, 255, 0.06);  /* top-left light-source edge */
+  --clay-shadow:       rgba(0, 0, 0, 0.55);        /* bottom-right depth shadow */
+  --clay-shadow-deep:  rgba(0, 0, 0, 0.7);
+  --clay-edge:         rgba(255, 255, 255, 0.05);  /* hairline between light/shadow */
+
+  /* ---- Signal accents ---- */
+  --signal-red:       #E0435B;   /* clarity / audio waveform accent */
+  --ink-blue:        #3554E8;   /* semantic intelligence accent */
+  --clay-amber:        #F2A65A;   /* mid-range score / warning */
+  --clay-rose:         #F2617A;   /* low score / error */
+
+  --signal-red-dim:   rgba(224, 67, 91, 0.16);
+  --ink-blue-dim:    rgba(53, 84, 232, 0.16);
+  --clay-amber-dim:    rgba(242, 166, 90, 0.14);
+  --clay-rose-dim:     rgba(242, 97, 122, 0.14);
+
+  /* ---- Text ---- */
+  --text-primary:      #F3F1EC;
+  --text-secondary:    #BFC1CA;
+  --text-tertiary:     #8B8D98;
+  --text-muted:        #5C5E68;
+
+  /* ---- Signature gradient (CTA, score ring, Pulse Orb ONLY) ---- */
+  --gradient-signal: linear-gradient(135deg, var(--signal-red) 0%, var(--ink-blue) 100%);
+  --gradient-signal-soft: linear-gradient(135deg, rgba(224, 67, 91, 0.22) 0%, rgba(53, 84, 232, 0.22) 100%);
+
+  /* ---- Clay physical language ---- */
+  --clay-shadow-rest:
+    -8px -8px 16px var(--clay-highlight),
+    10px 10px 24px var(--clay-shadow);
+  --clay-shadow-rest-sm:
+    -4px -4px 10px var(--clay-highlight),
+    5px 5px 14px var(--clay-shadow);
+  --clay-shadow-hero:
+    -12px -12px 24px var(--clay-highlight),
+    16px 16px 40px var(--clay-shadow);
+  --clay-shadow-pressed:
+    inset -4px -4px 10px var(--clay-highlight),
+    inset 5px 5px 14px var(--clay-shadow-deep);
+  --clay-shadow-pressed-sm:
+    inset -2px -2px 6px var(--clay-highlight),
+    inset 3px 3px 8px var(--clay-shadow-deep);
+  --clay-glow-red: 0 0 42px rgba(224, 67, 91, 0.16);
+  --clay-glow-blue: 0 0 42px rgba(53, 84, 232, 0.18);
+
+  /* ---- Radii ---- */
+  --radius-xs: 10px;
+  --radius-sm: 16px;
+  --radius-md: 22px;
+  --radius-lg: 28px;
+  --radius-xl: 34px;
+  --radius-full: 9999px;
+
+  /* ---- Typography ---- */
+  --font-display: "Fraunces Variable", "Fraunces", Georgia, serif;
+  --font-body: "Inter Variable", Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono Variable", "JetBrains Mono", "SF Mono", Consolas, monospace;
+
+  /* ---- Motion ---- */
+  --ease-clay: cubic-bezier(0.34, 1.56, 0.64, 1);   /* spring-y settle */
+  --ease-soft: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast: 160ms;
+  --dur-med: 320ms;
+  --dur-slow: 700ms;
+
+  /* ---- Layout ---- */
+  --nav-height: 76px;
+  --page-max: 1200px;
+  --gutter: clamp(1.1rem, 4vw, 2.5rem);
+}
+
+/* ---- Soft focus ring for every interactive clay element ---- */
+:focus-visible {
+  outline: 3px solid rgba(224, 67, 91, 0.7);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+/* ---- Reduced motion ---- */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --ease-clay: linear;
+    --ease-soft: linear;
+  }
+}

@@ -1,0 +1,70 @@
+/* ============================================================
+   Scrybe Typography
+   Display: Fraunces (soft ink serif). Body: Inter. Data: JetBrains Mono.
+   ============================================================ */
+
+body {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.65;
+  letter-spacing: -0.011em;
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 560;
+  line-height: 1.12;
+  letter-spacing: -0.022em;
+  color: var(--text-primary);
+}
+
+.display {
+  font-family: var(--font-display);
+  font-weight: 560;
+  letter-spacing: -0.025em;
+  line-height: 1.08;
+}
+
+.display--xl { font-size: clamp(2.6rem, 6vw, 4.4rem); }
+.display--lg { font-size: clamp(2rem, 4.6vw, 3.2rem); }
+.display--md { font-size: clamp(1.5rem, 3vw, 2.1rem); }
+
+.mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+/* Every score, percentage, and timecode gets the instrument look */
+.score-number,
+.mono-value,
+.timestamp,
+.telemetry-readout {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--signal-red);
+}
+
+.eyebrow--blue { color: var(--ink-blue); }
+
+::selection {
+  background: rgba(53, 84, 232, 0.35);
+  color: var(--text-primary);
+}
+
+code, pre, kbd {
+  font-family: var(--font-mono);
+}

@@ -7,7 +7,6 @@ on:
     branches: [ main ]
 
 jobs:
-  # Job 1: Frontend CI (Lint and Build verification)
   frontend-ci:
     name: Frontend CI (React / Vite)
     runs-on: ubuntu-latest
@@ -21,7 +20,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
 
       - name: Cache Node modules
         uses: actions/cache@v4
@@ -40,7 +39,6 @@ jobs:
       - name: Test Build Production Bundle
         run: npm run build
 
-  # Job 2: Backend CI (Syntax check and package installation verification)
   backend-ci:
     name: Backend CI (FastAPI / Python)
     runs-on: ubuntu-latest
@@ -54,7 +52,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
+          python-version: '3.12'
 
       - name: Cache pip packages
         uses: actions/cache@v4
@@ -71,54 +69,4 @@ jobs:
 
       - name: Verify code compilation (Syntax Check)
         run: |
-          python -m py_compile app.py register_test_user.py
-          python -m py_compile models/similarity_model.py
-          python -m py_compile pipeline/*.py
-          python -m py_compile utils/*.py
-
-  # Job 3: Continuous Deployment to Vercel (Only on push to main and when secrets are set)
-  vercel-deploy:
-    name: Deploy to Vercel (Production)
-    needs: [frontend-ci, backend-ci]
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      # Only run if Vercel Secrets are configured in repository settings
-      - name: Check for Vercel Secrets
-        id: check_secrets
-        run: |
-          if [ -z "${{ secrets.VERCEL_TOKEN }}" ] || [ -z "${{ secrets.VERCEL_ORG_ID }}" ] || [ -z "${{ secrets.VERCEL_PROJECT_ID }}" ]; then
-            echo "Vercel credentials not found. Skipping deployment step."
-            echo "run_deploy=false" >> $GITHUB_OUTPUT
-          else
-            echo "Vercel credentials found. Proceeding with deployment."
-            echo "run_deploy=true" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Install Vercel CLI
-        if: steps.check_secrets.outputs.run_deploy == 'true'
-        run: npm install --global vercel@latest
-
-      - name: Pull Vercel Environment Info
-        if: steps.check_secrets.outputs.run_deploy == 'true'
-        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
-        env:
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-
-      - name: Build Project Artifacts (Vercel Build)
-        if: steps.check_secrets.outputs.run_deploy == 'true'
-        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
-        env:
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-
-      - name: Deploy Project to Vercel
-        if: steps.check_secrets.outputs.run_deploy == 'true'
-        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
-        env:
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          python -m compileall -q app.py register_test_user.py models pipeline utils repositories schemas services middleware database

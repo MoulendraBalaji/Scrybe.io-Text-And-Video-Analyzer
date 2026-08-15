@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS Users (
     FirstName VARCHAR(255),
     LastName VARCHAR(255),
     Email VARCHAR(255),
-    AvatarUrl VARCHAR(500),
+    AvatarUrl LONGTEXT,
     RoleId INT NOT NULL DEFAULT 2,
     SubscriptionTierId INT NOT NULL DEFAULT 1,
     IsActive TINYINT(1) NOT NULL DEFAULT 1,
@@ -273,14 +273,55 @@ CREATE TABLE IF NOT EXISTS Settings (
 
 CREATE INDEX IX_Settings_UserId ON Settings (UserId);
 
--- Extra table required by notes feature in app.py
-CREATE TABLE IF NOT EXISTS notes (
+-- Extra table required by queries feature in app.py
+CREATE TABLE IF NOT EXISTS queries (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
-    content LONGTEXT NOT NULL,
+    query_text LONGTEXT NOT NULL,
+    response_text LONGTEXT NOT NULL,
+    question_id INT,
+    source VARCHAR(20) NOT NULL DEFAULT 'practice',
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT FK_Notes_User FOREIGN KEY (user_id) REFERENCES Users(Id) ON DELETE CASCADE
+    CONSTRAINT FK_Queries_User FOREIGN KEY (user_id) REFERENCES Users(Id) ON DELETE CASCADE
 );
+
+-- ============================================================
+-- QUESTION LIBRARY (Section 1.1)
+-- ============================================================
+CREATE TABLE IF NOT EXISTS question_bank (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    category VARCHAR(100) NOT NULL,
+    prompt LONGTEXT NOT NULL,
+    model_answer LONGTEXT NOT NULL DEFAULT '',
+    key_concepts LONGTEXT NOT NULL DEFAULT '[]',
+    org_id INT NULL,
+    created_by INT,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IX_QuestionBank_Category ON question_bank (category);
+CREATE INDEX IX_QuestionBank_OrgId ON question_bank (org_id);
+
+-- ============================================================
+-- INVITE LINKS (Section 1.4)
+-- ============================================================
+CREATE TABLE IF NOT EXISTS invite_links (
+    token VARCHAR(100) PRIMARY KEY,
+    question_set_id INT,
+    sender_id INT NOT NULL,
+    prompt LONGTEXT NOT NULL DEFAULT '',
+    reference_answer LONGTEXT NOT NULL DEFAULT '',
+    expires_at DATETIME NOT NULL,
+    max_uses INT NOT NULL DEFAULT 1,
+    used_count INT NOT NULL DEFAULT 0,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT FK_InviteLinks_Question FOREIGN KEY (question_set_id) REFERENCES question_bank(id) ON DELETE SET NULL,
+    CONSTRAINT FK_InviteLinks_Sender FOREIGN KEY (sender_id) REFERENCES Users(Id) ON DELETE CASCADE
+);
+
+CREATE INDEX IX_InviteLinks_Sender ON invite_links (sender_id);
+CREATE INDEX IX_InviteLinks_Expires ON invite_links (expires_at);
 
 -- Extra table required by queries feature in app.py
 CREATE TABLE IF NOT EXISTS queries (

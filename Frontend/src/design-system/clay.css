@@ -1,0 +1,569 @@
+/* ============================================================
+   Scrybe Clay Component System
+   Every surface: soft extruded material. Light from top-left,
+   shadow to bottom-right. :active presses the material inward.
+   ============================================================ */
+
+/* ---------- Layout ---------- */
+.clay-container {
+  width: 100%;
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+.clay-section {
+  padding-block: clamp(3rem, 7vw, 5.5rem);
+}
+
+.clay-section--tight {
+  padding-block: clamp(1.5rem, 4vw, 3rem);
+}
+
+.clay-section-header {
+  text-align: center;
+  max-width: 620px;
+  margin: 0 auto 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.clay-section-header--left {
+  text-align: left;
+  align-items: flex-start;
+  margin: 0 0 2rem;
+}
+
+.clay-section-header__row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.2rem;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.clay-section-header__row > div {
+  min-width: 0;
+}
+
+.clay-section-header__row .clay-btn {
+  flex: none;
+}
+
+/* ---------- Cards (extruded clay) ---------- */
+.clay-card {
+  position: relative;
+  background: var(--clay-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--clay-shadow-rest);
+  border: 1px solid var(--clay-edge);
+  transition: transform var(--dur-med) var(--ease-clay),
+              box-shadow var(--dur-med) var(--ease-soft),
+              border-color var(--dur-med) var(--ease-soft);
+}
+
+.clay-card--hero {
+  border-radius: var(--radius-xl);
+  box-shadow: var(--clay-shadow-hero);
+}
+
+.clay-card--interactive {
+  cursor: pointer;
+}
+
+.clay-card--interactive:hover {
+  transform: translateY(-6px) scale(1.012);
+  box-shadow:
+    -12px -12px 24px var(--clay-highlight),
+    18px 18px 42px var(--clay-shadow),
+    0 0 36px rgba(224, 67, 91, 0.1);
+  border-color: rgba(224, 67, 91, 0.24);
+}
+
+.clay-card--interactive:active {
+  transform: translateY(1px) scale(0.99);
+  box-shadow: var(--clay-shadow-pressed);
+}
+
+/* sweeping sheen across interactive cards on hover */
+.clay-card--interactive::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(105deg, transparent 30%, rgba(255, 255, 255, 0.06) 50%, transparent 70%);
+  background-size: 250% 100%;
+  background-position: 120% 0;
+  opacity: 0;
+  transition: opacity var(--dur-med) var(--ease-soft);
+  pointer-events: none;
+}
+
+.clay-card--interactive:hover::before {
+  opacity: 1;
+  animation: sheen-sweep 2.6s ease-in-out forwards;
+}
+
+.clay-card--padding { padding: clamp(1.25rem, 3vw, 2rem); }
+
+/* Inset / concave surface (pressed into the material) */
+.clay-inset {
+  background: var(--clay-surface-alt);
+  border-radius: var(--radius-md);
+  box-shadow: var(--clay-shadow-pressed);
+  border: 1px solid var(--clay-edge);
+}
+
+.clay-inset--sm {
+  border-radius: var(--radius-sm);
+  box-shadow: var(--clay-shadow-pressed-sm);
+}
+
+/* Small chips / pills */
+.clay-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0.95rem;
+  border-radius: var(--radius-full);
+  background: var(--clay-surface);
+  border: 1px solid var(--clay-edge);
+  box-shadow: var(--clay-shadow-rest-sm);
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  transition: transform var(--dur-fast) var(--ease-soft), box-shadow var(--dur-fast) var(--ease-soft);
+}
+
+.clay-chip:hover {
+  transform: translateY(-2px);
+}
+
+.clay-chip:active {
+  transform: translateY(1px);
+  box-shadow: var(--clay-shadow-pressed-sm);
+}
+
+.clay-chip--red { color: var(--signal-red); }
+.clay-chip--blue { color: var(--ink-blue); }
+.clay-chip--dot::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--signal-red);
+  box-shadow: 0 0 10px var(--signal-red);
+}
+
+/* ---------- Buttons ---------- */
+.clay-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  padding: 0.85rem 1.6rem;
+  border: 1px solid var(--clay-edge);
+  border-radius: var(--radius-md);
+  background: var(--clay-surface);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.92rem;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  box-shadow: var(--clay-shadow-rest-sm);
+  transition: transform var(--dur-fast) var(--ease-clay),
+              box-shadow var(--dur-fast) var(--ease-clay),
+              color var(--dur-fast) var(--ease-soft);
+  -webkit-tap-highlight-color: transparent;
+  white-space: nowrap;
+}
+
+.clay-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--clay-shadow-rest);
+}
+
+.clay-btn:active {
+  transform: translateY(1px) scale(0.985);
+  box-shadow: var(--clay-shadow-pressed-sm);
+  color: var(--text-secondary);
+}
+
+.clay-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Primary CTA — the signature gradient, magnetic hover in JS */
+.clay-btn--primary {
+  background: linear-gradient(135deg, var(--signal-red), var(--ink-blue));
+  background-size: 200% 200%;
+  border: none;
+  color: #0C0E14;
+  box-shadow:
+    -6px -6px 14px var(--clay-highlight),
+    8px 8px 22px var(--clay-shadow),
+    0 0 28px rgba(53, 84, 232, 0.28);
+  animation: gradient-pan 6s ease-in-out infinite;
+  overflow: hidden;
+  position: relative;
+}
+
+.clay-btn--primary::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 40%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.28), transparent);
+  transform: translateX(-120%) skewX(-18deg);
+  pointer-events: none;
+}
+
+.clay-btn--primary:hover::before {
+  animation: sheen-sweep 1.1s ease-in-out;
+}
+
+.clay-btn--primary:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow:
+    -6px -6px 14px var(--clay-highlight),
+    12px 12px 28px var(--clay-shadow),
+    0 0 48px rgba(224, 67, 91, 0.34);
+}
+
+.clay-btn--primary:active {
+  transform: translateY(1px) scale(0.99);
+  box-shadow:
+    inset -3px -3px 8px rgba(255, 255, 255, 0.25),
+    inset 4px 4px 10px rgba(12, 14, 20, 0.45);
+  color: #0C0E14;
+}
+
+.clay-btn--ghost {
+  background: transparent;
+  color: var(--text-secondary);
+  box-shadow: none;
+  border: 1px solid var(--clay-edge);
+}
+
+.clay-btn--ghost:hover {
+  color: var(--text-primary);
+  background: var(--clay-surface-alt);
+  box-shadow: var(--clay-shadow-rest-sm);
+}
+
+.clay-btn--ghost:active {
+  box-shadow: var(--clay-shadow-pressed-sm);
+}
+
+.clay-btn--danger {
+  color: var(--clay-rose);
+}
+
+.clay-btn--danger:hover {
+  background: var(--clay-rose-dim);
+  color: var(--clay-rose);
+}
+
+.clay-btn--sm {
+  padding: 0.5rem 1rem;
+  font-size: 0.8rem;
+  border-radius: var(--radius-sm);
+}
+
+.clay-btn--full { width: 100%; }
+
+.clay-btn__magnet { will-change: transform; }
+
+/* ---------- Inputs (concave, pressed into clay) ---------- */
+.clay-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  margin-bottom: 1.1rem;
+}
+
+.clay-field__label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--text-secondary);
+}
+
+.clay-input,
+.clay-textarea,
+.clay-select {
+  width: 100%;
+  padding: 0.85rem 1.1rem;
+  background: var(--clay-surface-alt);
+  color: var(--text-primary);
+  border: 1px solid var(--clay-edge);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  box-shadow: var(--clay-shadow-pressed-sm);
+  transition: box-shadow var(--dur-fast) var(--ease-soft),
+              border-color var(--dur-fast) var(--ease-soft),
+              transform var(--dur-fast) var(--ease-soft);
+}
+
+.clay-input::placeholder,
+.clay-textarea::placeholder {
+  color: var(--text-muted);
+}
+
+.clay-input:hover,
+.clay-textarea:hover,
+.clay-select:hover {
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.clay-input:focus,
+.clay-textarea:focus,
+.clay-select:focus {
+  outline: none;
+  border-color: rgba(224, 67, 91, 0.55);
+  box-shadow:
+    var(--clay-shadow-pressed-sm),
+    0 0 0 3px rgba(224, 67, 91, 0.14);
+  transform: translateY(1px);
+}
+
+.clay-textarea {
+  resize: vertical;
+  min-height: 110px;
+  line-height: 1.6;
+}
+
+/* ---------- Icon glyph ---------- */
+.clay-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  flex: none;
+  border-radius: var(--radius-md);
+  background: var(--clay-surface-alt);
+  color: var(--signal-red);
+  box-shadow: var(--clay-shadow-pressed-sm);
+  font-size: 1.35rem;
+}
+
+.clay-icon-glyph {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.clay-icon-glyph svg {
+  display: block;
+}
+
+.clay-icon--blue { color: var(--ink-blue); }
+.clay-icon--amber { color: var(--clay-amber); }
+.clay-icon--rose { color: var(--clay-rose); }
+.clay-icon--sm { width: 40px; height: 40px; font-size: 1.05rem; border-radius: var(--radius-sm); }
+
+/* ---------- Text gradient (signature) ---------- */
+.text-signal {
+  background: var(--gradient-signal);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* ---------- Spinner ---------- */
+.clay-spinner {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2.5px solid rgba(12, 14, 20, 0.25);
+  border-top-color: #0C0E14;
+  animation: spin 0.7s linear infinite;
+}
+
+.clay-spinner--light {
+  border-color: rgba(255, 255, 255, 0.18);
+  border-top-color: var(--signal-red);
+}
+
+/* ---------- Telemetry readout bars ---------- */
+.telemetry-track {
+  height: 10px;
+  border-radius: var(--radius-full);
+  background: var(--clay-surface-alt);
+  box-shadow: var(--clay-shadow-pressed-sm);
+  overflow: hidden;
+}
+
+.telemetry-fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  background: var(--gradient-signal);
+  transition: width var(--dur-med) var(--ease-soft);
+}
+
+/* ---------- Rank medallions (clay relief) ---------- */
+.rank-medallion {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 0.95rem;
+  border: 1px solid var(--clay-edge);
+  box-shadow: var(--clay-shadow-rest-sm);
+  background: var(--clay-surface);
+  color: var(--text-secondary);
+}
+
+.rank-medallion--gold {
+  color: #FFD98A;
+  background: linear-gradient(145deg, #4A3B17, #2E2610);
+  box-shadow:
+    -4px -4px 10px var(--clay-highlight),
+    6px 6px 16px var(--clay-shadow),
+    0 0 20px rgba(242, 166, 90, 0.18);
+}
+
+.rank-medallion--silver {
+  color: #D7DBE4;
+  background: linear-gradient(145deg, #3A3E4A, #262A33);
+  box-shadow:
+    -4px -4px 10px var(--clay-highlight),
+    6px 6px 16px var(--clay-shadow);
+}
+
+.rank-medallion--bronze {
+  color: #E8B08A;
+  background: linear-gradient(145deg, #43301F, #2B1F14);
+  box-shadow:
+    -4px -4px 10px var(--clay-highlight),
+    6px 6px 16px var(--clay-shadow);
+}
+
+/* ---------- Status badge ---------- */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.8rem;
+  border-radius: var(--radius-full);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  background: var(--clay-surface-alt);
+  box-shadow: var(--clay-shadow-pressed-sm);
+  color: var(--text-secondary);
+}
+
+.status-badge--online { color: var(--signal-red); }
+.status-badge--online::before {
+  content: "";
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--signal-red);
+  box-shadow: 0 0 8px var(--signal-red);
+}
+.status-badge--live { color: var(--clay-rose); }
+.status-badge--live::before {
+  content: "";
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--clay-rose);
+  box-shadow: 0 0 8px var(--clay-rose);
+  animation: recording-dot 1.4s ease-out infinite;
+}
+
+/* ---------- Streak badge ---------- */
+.streak-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.25rem 0.7rem;
+  border-radius: var(--radius-full);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--signal-red);
+  background: var(--clay-surface-alt);
+  box-shadow: var(--clay-shadow-pressed-sm);
+}
+
+/* ---------- Coach nudge toast ---------- */
+.coach-nudge {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius-sm);
+  background: var(--clay-surface-alt);
+  box-shadow: var(--clay-shadow-pressed-sm);
+  border-left: 3px solid var(--signal-red);
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.coach-nudge--warn { border-left-color: var(--clay-amber); }
+.coach-nudge--danger { border-left-color: var(--clay-rose); }
+.coach-nudge--info { border-left-color: var(--ink-blue); }
+
+/* ---------- Inset table strip rows ---------- */
+.clay-table-row {
+  display: grid;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.9rem 1.1rem;
+  border-radius: var(--radius-sm);
+  background: var(--clay-surface-alt);
+  box-shadow: var(--clay-shadow-pressed-sm);
+  transition: box-shadow var(--dur-fast) var(--ease-soft), transform var(--dur-fast) var(--ease-soft);
+}
+
+.clay-table-row:hover {
+  box-shadow:
+    inset -2px -2px 6px var(--clay-highlight),
+    inset 3px 3px 8px var(--clay-shadow-deep),
+    -2px -2px 8px var(--clay-highlight),
+    3px 3px 12px var(--clay-shadow);
+  transform: translateY(-1px);
+}
+
+/* ---------- Misc ---------- */
+.clay-divider {
+  height: 1px;
+  border: none;
+  background: linear-gradient(90deg, transparent, var(--clay-edge) 20%, var(--clay-edge) 80%, transparent);
+  margin: 1.5rem 0;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------- Responsive degradation ---------- */
+@media (max-width: 640px) {
+  .clay-card--hero {
+    box-shadow: var(--clay-shadow-rest);
+  }
+  .clay-btn {
+    padding: 0.75rem 1.2rem;
+  }
+}

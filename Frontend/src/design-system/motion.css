@@ -1,0 +1,121 @@
+/* ============================================================
+   Scrybe Motion — keyframes + reduced-motion safety
+   Page transitions are spring fade/scale with blur. Scroll reveals
+   are opacity + translateY + scale + subtle rotation, once per
+   element. Signature gradients pan and shimmer; the orb breathes.
+   ============================================================ */
+
+@keyframes clay-fade-up {
+  from { opacity: 0; transform: translateY(26px) scale(0.96) rotateX(6deg); filter: blur(6px); }
+  to   { opacity: 1; transform: translateY(0) scale(1) rotateX(0); filter: blur(0); }
+}
+
+@keyframes clay-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes clay-breathe {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50%      { transform: translateY(-12px) scale(1.03); }
+}
+
+/* Slow ambient drift for background blobs */
+@keyframes blob-drift {
+  0%   { transform: translate(0, 0) scale(1) rotate(0deg); }
+  25%  { transform: translate(6vw, -4vh) scale(1.15) rotate(12deg); }
+  50%  { transform: translate(-4vw, 5vh) scale(0.9) rotate(-8deg); }
+  75%  { transform: translate(-6vw, -2vh) scale(1.08) rotate(6deg); }
+  100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+}
+
+/* Animated signature gradient (pan + hue drift) */
+@keyframes gradient-pan {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Sweeping light sheen for CTAs / cards */
+@keyframes sheen-sweep {
+  0%   { transform: translateX(-120%) skewX(-18deg); }
+  60%, 100% { transform: translateX(220%) skewX(-18deg); }
+}
+
+@keyframes orb-pulse-glow {
+  0%, 100% { box-shadow:
+    -8px -8px 16px var(--clay-highlight),
+    12px 12px 30px var(--clay-shadow),
+    0 0 34px rgba(224, 67, 91, 0.22); }
+  50% { box-shadow:
+    -8px -8px 16px var(--clay-highlight),
+    12px 12px 30px var(--clay-shadow),
+    0 0 64px rgba(53, 84, 232, 0.34); }
+}
+
+@keyframes recording-dot {
+  0% { box-shadow: 0 0 0 0 rgba(242, 97, 122, 0.55); }
+  70% { box-shadow: 0 0 0 12px rgba(242, 97, 122, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(242, 97, 122, 0); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Floating idle bob */
+@keyframes float-y {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-12px); }
+}
+
+/* Utility animation classes */
+.anim-fade-up {
+  animation: clay-fade-up var(--dur-med) var(--ease-soft) both;
+}
+
+.anim-float {
+  animation: float-y 5s ease-in-out infinite;
+}
+
+/* Signature text: pans along the red→blue gradient */
+.text-signal,
+.clay-btn--primary {
+  background-size: 200% 200%;
+  animation: gradient-pan 7s ease-in-out infinite;
+}
+
+/* Sheen layer for hover states (see clay.css) */
+.btn-sheen,
+.card-sheen {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  border-radius: inherit;
+}
+
+.btn-sheen::before,
+.card-sheen::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 40%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.14), transparent);
+  animation: sheen-sweep 3.4s ease-in-out infinite;
+}
+
+/* Respect prefers-reduced-motion: kill rotation/tilt/parallax/drift,
+   keep simple opacity fades only. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .anim-fade-up { animation-name: clay-fade !important; }
+}

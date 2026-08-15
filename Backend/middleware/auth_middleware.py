@@ -22,6 +22,12 @@ async def get_current_user(request: Request) -> dict:
         raise HTTPException(status_code=401, detail="Invalid or expired token")
     return payload
 
+async def get_optional_user(request: Request) -> dict | None:
+    """Like get_current_user but returns None when no/expired token.
+    Used for endpoints that are browsable publicly (e.g. /questions)."""
+    credentials = await security(request)
+    return await verify_token(credentials)
+
 def rate_limit(key: str, max_requests: int = 60, window_seconds: int = 60):
     now = time.time()
     if key in _rate_limit_store:

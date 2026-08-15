@@ -9,7 +9,6 @@ coverage/
 # Production
 dist/
 build/
-.vercel/
 
 # Misc
 .DS_Store
@@ -39,3 +38,7 @@ env/
 uploads/
 /tmp/uploads/
 Backend/uploads/
+
+# Databases (local dev only)
+*.db
+Backend/scrybe.db

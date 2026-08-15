@@ -34,7 +34,7 @@ class UserRepository:
         try:
             cursor.execute(
                 "SELECT u.Id, u.Username, u.FirstName, u.LastName, u.Email, "
-                "u.IsActive, ur.Name as RoleName "
+                "u.IsActive, ur.Name as RoleName, u.AvatarUrl "
                 "FROM Users u "
                 "JOIN UserRoles ur ON u.RoleId = ur.Id "
                 "WHERE u.Id = ?",
@@ -45,9 +45,35 @@ class UserRepository:
                 return {
                     "id": row[0], "username": row[1],
                     "first_name": row[2], "last_name": row[3],
-                    "email": row[4], "is_active": row[5], "role": row[6]
+                    "email": row[4], "is_active": row[5], "role": row[6],
+                    "avatar": row[7],
                 }
             return None
+        finally:
+            cursor.close()
+            conn.close()
+
+    def update_profile(self, user_id: int, first_name: str | None, last_name: str | None, email: str | None) -> bool:
+        conn = self.db.get_connection()
+        cursor = conn.cursor()
+        try:
+            cursor.execute(
+                "UPDATE Users SET FirstName = ?, LastName = ?, Email = ? WHERE Id = ?",
+                (first_name or "", last_name or "", email or "", user_id),
+            )
+            conn.commit()
+            return cursor.rowcount > 0
+        finally:
+            cursor.close()
+            conn.close()
+
+    def update_avatar(self, user_id: int, avatar: str | None) -> bool:
+        conn = self.db.get_connection()
+        cursor = conn.cursor()
+        try:
+            cursor.execute("UPDATE Users SET AvatarUrl = ? WHERE Id = ?", (avatar or None, user_id))
+            conn.commit()
+            return cursor.rowcount > 0
         finally:
             cursor.close()
             conn.close()
@@ -74,6 +100,35 @@ class UserRepository:
         try:
             cursor.execute("UPDATE Users SET LastLoginAt = UTC_TIMESTAMP() WHERE Id = ?", (user_id,))
             conn.commit()
+        finally:
+            cursor.close()
+            conn.close()
+
+    def get_subscription(self, user_id: int) -> dict | None:
+        """Return the user's subscription tier in the frontend's camelCase shape."""
+        conn = self.db.get_connection()
+        cursor = conn.cursor()
+        try:
+            cursor.execute(
+                "SELECT t.Id, t.Name, t.MaxProjects, t.MaxVideoSizeMB, t.DailyApiCalls, "
+                "t.HasRealTimeProcessing, t.HasBatchProcessing "
+                "FROM Users u "
+                "JOIN SubscriptionTiers t ON u.SubscriptionTierId = t.Id "
+                "WHERE u.Id = ?",
+                (user_id,)
+            )
+            row = cursor.fetchone()
+            if row:
+                return {
+                    "id": row[0],
+                    "name": row[1],
+                    "maxProjects": row[2],
+                    "maxVideoSizeMB": row[3],
+                    "dailyApiCalls": row[4],
+                    "hasRealTimeProcessing": bool(row[5]),
+                    "hasBatchProcessing": bool(row[6]),
+                }
+            return None
         finally:
             cursor.close()
             conn.close()

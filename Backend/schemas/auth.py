@@ -35,3 +35,11 @@ class TokenResponse(BaseModel):
 
 class TokenRefresh(BaseModel):
     refresh_token: str
+
+class ProfileUpdate(BaseModel):
+    first_name: str | None = Field(None, min_length=1, max_length=100)
+    last_name: str | None = Field(None, min_length=1, max_length=100)
+    email: str | None = Field(None, max_length=255)
+
+class AvatarUpdate(BaseModel):
+    avatar: str | None = None

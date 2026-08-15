@@ -49,7 +49,7 @@ def transcribe_audio(audio_file):
     # 1. Perform Transcription
     model = get_whisper_model()
     print(f"Transcribing {audio_file}...")
-    result = model.transcribe(audio_file, verbose=False)
+    result = model.transcribe(audio_file, verbose=False, word_timestamps=True)
     
     # 2. Try Diarization if possible
     pipeline = get_diarization_pipeline()
@@ -88,6 +88,31 @@ def transcribe_audio(audio_file):
 # Compatibility alias for generate_conversation if needed
 def generate_conversation(audio_file):
     return transcribe_audio(audio_file)
+
+def transcribe_audio_with_segments(audio_file):
+    """
+    Transcribes with word timestamps enabled and returns
+    (transcript_text, segments) where each segment carries
+    start/end (seconds) and text for the replay timeline.
+    """
+    if not os.path.exists(audio_file):
+        raise FileNotFoundError(f"Audio file not found: {audio_file}")
+
+    model = get_whisper_model()
+    print(f"Transcribing {audio_file} (with segments)...")
+    result = model.transcribe(audio_file, verbose=False, word_timestamps=True)
+
+    text = result['text'].strip()
+    segments = [
+        {
+            "start": round(seg["start"], 2),
+            "end": round(seg["end"], 2),
+            "text": seg["text"].strip(),
+        }
+        for seg in result.get("segments", [])
+        if seg.get("text", "").strip()
+    ]
+    return text, segments
 
 if __name__ == "__main__":
     import sys

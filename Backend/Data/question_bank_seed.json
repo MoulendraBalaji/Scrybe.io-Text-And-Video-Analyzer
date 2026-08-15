@@ -1,0 +1,176 @@
+[
+  {
+    "category": "Behavioral",
+    "prompt": "Tell me about a time you had to work with a difficult teammate.",
+    "model_answer": "I once worked with a colleague who resisted sharing requirements. I scheduled a focused one-on-one, listened to their concerns first, and then agreed on a shared checklist. We shipped on time, and the relationship improved because I separated the problem from the person and looked for common ground.",
+    "key_concepts": ["conflict resolution", "active listening", "collaboration", "outcome", "relationship"]
+  },
+  {
+    "category": "Behavioral",
+    "prompt": "Describe a time you failed at something. What did you learn?",
+    "model_answer": "I missed a launch deadline because I underestimated scope. I owned the mistake publicly, reviewed what went wrong, and started using smaller milestones with daily check-ins. It taught me to over-communicate risk early instead of hoping the plan would hold.",
+    "key_concepts": ["ownership", "lessons learned", "planning", "communication", "growth"]
+  },
+  {
+    "category": "Behavioral",
+    "prompt": "Give an example of a leadership experience, formal or informal.",
+    "model_answer": "I led a cross-functional project with no direct authority. I established clear ownership, ran a short standup twice a week, and unblocked teammates by removing dependencies. The project delivered a week early and the team asked to work together again.",
+    "key_concepts": ["leadership", "influence", "coordination", "delivery", "team"]
+  },
+  {
+    "category": "Behavioral",
+    "prompt": "Tell me about a time you had to adapt to a major change at work.",
+    "model_answer": "Our team switched to a new technology stack with a two-week runway. I volunteered to pilot the migration, built a small proof of concept, and documented the pitfalls for the rest of the team. Adapting quickly was about reducing the unknown in small, testable steps.",
+    "key_concepts": ["adaptability", "learning", "pilot", "documentation", "change"]
+  },
+  {
+    "category": "Behavioral",
+    "prompt": "Describe a situation where you disagreed with your manager.",
+    "model_answer": "My manager wanted to ship a feature quickly, but I believed it was technically risky. I prepared a short comparison of the two approaches with the data, presented it respectfully, and we compromised on a phased rollout. The disagreement stayed professional because it was about the decision, not the person.",
+    "key_concepts": ["constructive disagreement", "data driven", "respect", "compromise", "decision"]
+  },
+  {
+    "category": "Behavioral",
+    "prompt": "Tell me about a time you went above and beyond your job description.",
+    "model_answer": "A teammate went on leave during peak season, so I absorbed their reporting duties without being asked. I also wrote a runbook so the next person could do it in half the time. Going beyond the role is about noticing gaps and closing them in a way that compounds.",
+    "key_concepts": ["initiative", "reliability", "runbook", "ownership", "support"]
+  },
+  {
+    "category": "Technical/SWE",
+    "prompt": "Explain how you would design a URL shortener at scale.",
+    "model_answer": "A URL shortener maps long URLs to short slugs. I would use a base62 encoding of a monotonically increasing counter or a hash, store the mapping in a sharded key-value store, and add a cache in front of reads. Redirects should be fast, idempotent, and support expiration and analytics.",
+    "key_concepts": ["base62", "hashing", "sharding", "cache", "redirect"]
+  },
+  {
+    "category": "Technical/SWE",
+    "prompt": "Explain what happens when you type a URL into a browser and press Enter.",
+    "model_answer": "The browser checks its cache, then resolves the domain via DNS to get an IP address. It opens a TCP connection, negotiates TLS, and sends an HTTP request. The server processes the request and returns an HTML response, which the browser parses, builds the DOM, fetches sub-resources, and renders.",
+    "key_concepts": ["dns", "tcp", "tls", "http", "dom"]
+  },
+  {
+    "category": "Technical/SWE",
+    "prompt": "How would you find the largest k numbers in an unsorted array?",
+    "model_answer": "The cleanest approach is a min-heap of size k: iterate the array and keep the k largest seen so far, yielding O(n log k) time and O(k) space. For very large inputs, a partial quickselect partition runs in expected O(n). The heap is preferred when k is small.",
+    "key_concepts": ["min heap", "quickselect", "complexity", "array", "algorithm"]
+  },
+  {
+    "category": "Technical/SWE",
+    "prompt": "What is the difference between SQL and NoSQL databases?",
+    "model_answer": "SQL databases store data in structured tables with fixed schemas and enforce relationships and ACID transactions. NoSQL databases trade strict consistency for flexible schemas and horizontal scaling, using documents, key-values, or graphs. The choice depends on whether your workload needs rigid relationships or elastic scale.",
+    "key_concepts": ["schema", "acid", "scalability", "document", "consistency"]
+  },
+  {
+    "category": "Technical/SWE",
+    "prompt": "Explain the CAP theorem and its trade-offs.",
+    "model_answer": "CAP states a distributed system can guarantee only two of consistency, availability, and partition tolerance at any moment. Under network partitions you must choose between returning stale data (availability) or refusing until nodes agree (consistency). Most systems favor availability and eventual consistency.",
+    "key_concepts": ["consistency", "availability", "partition", "eventual consistency", "tradeoff"]
+  },
+  {
+    "category": "Technical/SWE",
+    "prompt": "How do you approach debugging a slow production endpoint?",
+    "model_answer": "I start by reproducing the slowness and checking dashboards for latency, errors, and resource usage. Then I narrow down whether it is network, database queries, or application logic, using tracing and profiling. I fix the bottleneck, add a regression test or alert, and verify the change in production.",
+    "key_concepts": ["profiling", "tracing", "database", "metrics", "regression"]
+  },
+  {
+    "category": "Product/PM",
+    "prompt": "How would you prioritize features for a limited roadmap?",
+    "model_answer": "I would score each candidate against user impact, business value, cost, and risk, then plot them on a value-versus-effort matrix. High-value, low-effort items ship first, and must-have dependencies are sequenced early. Priorities are revisited when new evidence arrives.",
+    "key_concepts": ["prioritization", "impact", "effort", "roadmap", "tradeoffs"]
+  },
+  {
+    "category": "Product/PM",
+    "prompt": "Walk me through how you would improve a product's onboarding flow.",
+    "model_answer": "First I would measure where users drop off with funnels and session recordings. Based on the data, I would simplify the signup to the essential path, add contextual tooltips, and shorten time-to-first-success. I would A/B test each change and iterate on the metrics.",
+    "key_concepts": ["funnel", "drop off", "activation", "a/b test", "onboarding"]
+  },
+  {
+    "category": "Product/PM",
+    "prompt": "How would you measure the health of a marketplace product?",
+    "model_answer": "I would track liquidity: supply, demand, and conversion rates on both sides, plus time-to-match and repeat rates. Healthy marketplaces grow matching efficiency over time while keeping take-rate stable. Churn of the thinner side of the marketplace is the earliest warning sign.",
+    "key_concepts": ["marketplace", "liquidity", "matching", "supply", "demand"]
+  },
+  {
+    "category": "Product/PM",
+    "prompt": "Tell me about a product you would build to solve a problem you personally faced.",
+    "model_answer": "As a frequent traveler, I struggled to find meeting rooms near transit. I would build a product that indexes room availability, transit time, and price into one booking flow. The key insight is bundling the search and the commute into a single decision, and validating with a waitlist before building.",
+    "key_concepts": ["problem statement", "validation", "user need", "booking", "mvp"]
+  },
+  {
+    "category": "Product/PM",
+    "prompt": "How would you decide between building in-house and buying a tool?",
+    "model_answer": "I would compare total cost of ownership, time to value, and strategic control. If the tool is commodity and easy to integrate, buy it; if it is a core differentiator with data you own, build it. The decision is revisited as scale changes the economics.",
+    "key_concepts": ["build vs buy", "total cost", "integration", "differentiation", "ownership"]
+  },
+  {
+    "category": "Academic Oral Exam",
+    "prompt": "Summarize the main argument of your thesis in three minutes.",
+    "model_answer": "My thesis argues that early intervention predicts long-term learning outcomes more strongly than class size. Using longitudinal data, I show that a structured feedback loop in the first semester narrows achievement gaps. The contribution is practical: schools can target resources where they matter most.",
+    "key_concepts": ["thesis", "argument", "evidence", "contribution", "longitudinal"]
+  },
+  {
+    "category": "Academic Oral Exam",
+    "prompt": "Defend your research methodology against the strongest critique you can imagine.",
+    "model_answer": "A critic might argue my sample is too small to generalize. I would agree the sample limits external validity, but the within-group comparisons control for many confounds and my results align with three independent studies. I would propose a replication study as the honest next step.",
+    "key_concepts": ["methodology", "limitation", "validity", "replication", "defense"]
+  },
+  {
+    "category": "Academic Oral Exam",
+    "prompt": "Explain one result from your work as if teaching it to a first-year student.",
+    "model_answer": "Imagine a child learning to read. The simple result is that the number of spoken words they hear at home strongly predicts reading growth. It is not about ability, it is about exposure. That is why my model shows a steeper growth curve for high-exposure households.",
+    "key_concepts": ["explain simply", "exposure", "reading growth", "model", "teaching"]
+  },
+  {
+    "category": "Academic Oral Exam",
+    "prompt": "What is the single most important contribution your research makes?",
+    "model_answer": "The most important contribution is showing that a low-cost intervention produces effects comparable to expensive structural changes. If replicable, that changes how administrators allocate budgets. The finding is actionable rather than just descriptive.",
+    "key_concepts": ["contribution", "intervention", "actionable", "replication", "impact"]
+  },
+  {
+    "category": "Sales Pitch",
+    "prompt": "Pitch our analytics product to a skeptical CFO.",
+    "model_answer": "CFO, you are already paying for data you cannot use. This product consolidates three tools into one, cuts reporting time by sixty percent, and surfaces cost anomalies before they hit the budget. You will see payback inside two quarters, and the risk is a one-week pilot.",
+    "key_concepts": ["value prop", "roi", "payback", "risk reduction", "pilot"]
+  },
+  {
+    "category": "Sales Pitch",
+    "prompt": "How would you pitch a product to a customer who already uses a competitor?",
+    "model_answer": "I would not start by criticizing the competitor. I would ask what is working and where they lose time, then map our product to those specific gaps. The goal is one concrete win they can pilot in a week, so switching feels low risk and incremental.",
+    "key_concepts": ["competitive", "differentiation", "pain points", "pilot", "switching cost"]
+  },
+  {
+    "category": "Sales Pitch",
+    "prompt": "Deliver a thirty-second elevator pitch for a new feature.",
+    "model_answer": "Our new scheduling assistant turns the three hours you spend coordinating meetings into three minutes. It reads your calendar, proposes the best times across time zones, and books automatically. It is live today, integrates in minutes, and the first fifty users are free.",
+    "key_concepts": ["elevator pitch", "benefit", "time saved", "call to action", "brevity"]
+  },
+  {
+    "category": "Sales Pitch",
+    "prompt": "How do you handle the objection that the price is too high?",
+    "model_answer": "I would reframe price as value: this costs less than one month of the manual work it replaces. I would ask what the current process costs in hours and errors, then show the breakeven point. If value is not there, I would propose a smaller scope rather than a discount.",
+    "key_concepts": ["objection handling", "value framing", "breakeven", "scope", "confidence"]
+  },
+  {
+    "category": "Public Speaking",
+    "prompt": "Give a two-minute speech introducing yourself to a new team.",
+    "model_answer": "Hi, I am Jordan, and I lead the data team. In my first month I want to learn who depends on our dashboards and what breaks their trust in the numbers. I will keep it simple: open, honest communication, and a weekly ask-me-anything. I am glad to be here.",
+    "key_concepts": ["introduction", "openness", "approachability", "clarity", "team"]
+  },
+  {
+    "category": "Public Speaking",
+    "prompt": "Explain a complex topic to a non-technical audience in under two minutes.",
+    "model_answer": "Think of encryption as a locked box with two keys. One key locks the box, the other opens it, and they are never the same. Anyone can send you a locked box because the locking key is public, but only you can open it with your private key. That is how your messages stay private.",
+    "key_concepts": ["analogy", "simplicity", "audience", "encryption", "clarity"]
+  },
+  {
+    "category": "Public Speaking",
+    "prompt": "Describe a mistake you made in a presentation and how you recovered.",
+    "model_answer": "Mid-presentation my slides failed and I had no backup. I stopped, joked about the gremlin in the projector, and gave the talk from memory using a whiteboard. People told me the recovery was more memorable than the slides, and I never present without a printed outline now.",
+    "key_concepts": ["recovery", "composure", "preparation", "humor", "backup"]
+  },
+  {
+    "category": "Public Speaking",
+    "prompt": "What makes a great speaker, in your opinion?",
+    "model_answer": "A great speaker does three things: they respect the audience's time, they simplify rather than impress, and they make the listener feel something. Technical accuracy matters less than a clear narrative and honest pacing. Pausing is a feature, not a bug.",
+    "key_concepts": ["audience", "simplicity", "narrative", "pacing", "pausing"]
+  }
+]

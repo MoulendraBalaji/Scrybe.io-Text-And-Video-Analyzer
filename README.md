@@ -3,7 +3,7 @@
   <!-- Logo -->
   <img src="Frontend/public/logo.svg" alt="Scrybe logo" width="92" />
 
-  <h1>Scrybe</h1>
+  <h1>Scrybe.IO</h1>
   <p><strong>AI-powered speech &amp; presentation evaluator</strong></p>
   <p>Upload a video or audio response, and Scrybe transcribes it, scores it against a reference answer across five rubrics, and gives you structured, actionable feedback — in seconds.</p>
 

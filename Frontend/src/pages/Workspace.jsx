@@ -19,7 +19,7 @@ import { LivePanel } from '../components/workspace/LivePanel';
 import { RubricPanel } from '../components/workspace/RubricPanel';
 import { useSocket } from '../hooks/useSocket';
 import { sendFrame, subscribe } from '../services/socket';
-import { evaluationApi, queriesApi, questionsApi } from '../services/api';
+import { evaluationApi, queriesApi } from '../services/api';
 import { useAuthStore } from '../stores/useAuthStore';
 import { gradeFor } from '../types';
 

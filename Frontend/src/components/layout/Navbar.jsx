@@ -35,6 +35,7 @@ export function Navbar() {
   const [open, setOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [hidden, setHidden] = useState(isWorkspace);
+  const [prevPath, setPrevPath] = useState(location.pathname);
   const lastY = useRef(0);
   const menuRef = useRef(null);
 
@@ -42,10 +43,14 @@ export function Navbar() {
     if (user && !streak) refreshStreak();
   }, [user, streak, refreshStreak]);
 
-  useEffect(() => {
-    setMenuOpen(false);
+  /* Close the mobile nav and the account dropdown when the route
+     changes — done during render (React's recommended pattern) to
+     avoid a synchronous setState cascade inside an effect. */
+  if (location.pathname !== prevPath) {
+    setPrevPath(location.pathname);
     setOpen(false);
-  }, [location.pathname]);
+    setMenuOpen(false);
+  }
 
   /* Auto-hide on the workspace: push the bar away once the user
      scrolls down or starts interacting; bring it back on scroll up. */
